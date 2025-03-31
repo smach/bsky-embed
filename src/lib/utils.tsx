@@ -26,7 +26,7 @@ const formatPost: ({ post, reason, isRoot }: { post: any; reason: Reason; isRoot
   replyPost: any;
   username: string;
 } | null = ({ post, reason, isRoot }) => {
-  if (post.$type === "app.bsky.embed.record#viewNotFound") {
+  if (post.$type === "app.bsky.embed.record#viewNotFound" || post.$type === 'app.bsky.embed.record#viewBlocked') {
     return null
   }
   if (post.$type === "app.bsky.graph.defs#listView") {
