@@ -8,6 +8,9 @@ interface Props {
   linkTarget: '_self' | '_blank' | '_parent' | '_top';
   handleModalContent: any;
   isCard?: boolean;
+  disableImages?: boolean;
+  disableVideos?: boolean;
+  disableAutoplay?: boolean;
   dateFormat?: DateFormat
 }
 
@@ -17,12 +20,17 @@ const BskyPost: Component<Props> = ({
   handleModalContent,
   isCard = false,
   dateFormat,
+  disableImages,
+  disableVideos,
+  disableAutoplay,
 }: Props) => {
   let videoRef: HTMLVideoElement | undefined;
 
+  console.log(disableAutoplay)
+
   onMount(() => {
-    if (post.video && post.video.cid) {
-      fetchVideo(post.video, videoRef); // Now it should have the element
+    if (!disableVideos && post.video && post.video.cid) {
+      fetchVideo(post.video, videoRef, disableAutoplay);
     }
   });
   return <article class="p-4 border-b border-slate-300 dark:border-slate-800">
@@ -56,7 +64,7 @@ const BskyPost: Component<Props> = ({
             : <span>{t.val}</span>)}
         </p>
 
-        { post.images.length > 0 && <div class={post.images.length > 1 ? "mt-4 grid grid-cols-2 gap-2" : "mt-4"}>
+        { !disableImages && post.images.length > 0 && <div class={post.images.length > 1 ? "mt-4 grid grid-cols-2 gap-2" : "mt-4"}>
           { post.images.map((image: { thumb: string | undefined; alt: string | undefined; }) =>
             <a
               href={`https://bsky.app/profile/${post.handle}/post/${getContentAfterLastSlash(post.uri)}`}
@@ -69,7 +77,7 @@ const BskyPost: Component<Props> = ({
           )}
         </div> }
 
-        { post.video && <div class="mt-4 w-full">
+        { !disableVideos && post.video && <div class="mt-4 w-full">
           <video
             width="100%"
             ref={videoRef}
@@ -88,7 +96,7 @@ const BskyPost: Component<Props> = ({
           rel="noopener"
           class="mt-4 rounded-md border border-slate-300 block"
         >
-          { post.card.thumb && <img src={post.card.thumb} class="rounded-t-md" alt="Post Thumbnail"/> }
+          { post.card.thumb && !disableImages && <img src={post.card.thumb} class="rounded-t-md" alt="Post Thumbnail"/> }
           <div class="p-3">
             <p class="text-slate-500 dark:text-slate-400 text-sm">{new URL(post.card.uri).hostname}</p>
             <p class="font-bold dark:text-white mb-1">{post.card.title}</p>
@@ -102,7 +110,11 @@ const BskyPost: Component<Props> = ({
           rel="noopener"
           class="mt-4 rounded-md border border-slate-300 block"
         >
-          <BskyPost {...{ linkTarget, handleModalContent}} post={post.replyPost} isCard={true} />
+          <BskyPost
+            {...{ linkTarget, handleModalContent, disableImages, disableVideos, disableAutoplay }}
+            post={post.replyPost}
+            isCard={true}
+          />
         </a> }
       </div>
     </div>

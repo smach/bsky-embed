@@ -11,7 +11,7 @@ const App: Component = () => {
     linkTarget: '_self' | '_blank' | '_parent' | '_top',
     loadMore: boolean,
   } = {
-    username: "erocy.world",
+    username: "vincentwill.com",
     feed: "at://did:plc:jcoy7v3a2t4rcfdh6i4kza25/app.bsky.feed.generator/astro",
     search: "#buildinpublic",
     mode: "",
@@ -32,6 +32,9 @@ const App: Component = () => {
           linkImage={true}
           linkTarget={options.linkTarget}
           loadMore={options.loadMore}
+          // disableAutoplay={true}
+          // disableImages={true}
+          // disableVideos={true}
           // dateFormat={{
           //   type: 'absolute',
           //   locale: 'de-DE',

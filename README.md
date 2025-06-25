@@ -38,6 +38,14 @@ Import in any framework using:
 
 ## Usage
 
+Minimal:
+
+```html
+  <bsky-embed username="vincentwill.com"></bsky-embed>
+```
+
+All options:
+
 ```html
   <bsky-embed
     username="vincentwill.com"
@@ -51,6 +59,9 @@ Import in any framework using:
     disable-styles="false"
     custom-styles=".border-slate-300 { border-color: red; }"
     date-format='{"type":"absolute","locale":"de-DE","options":{"weekday":"long","year":"numeric","month":"long","day":"numeric"}}'
+    disable-images="true"
+    disable-videos="true"
+    disable-autoplay="true"
   >
   </bsky-embed>
 ```
@@ -81,6 +92,9 @@ Import in any framework using:
 | `link-image`     | `"true"` or `"false"`                               | `"false"`     |
 | `load-more`      | `"true"` or `"false"`                               | `"false"`     |
 | `disable-styles` | `"true"` or `"false"`                               | `"false"`     |
+| `disable-images` | `"true"` or `"false"`                               | `"false"`     |
+| `disable-videos` | `"true"` or `"false"`                               | `"false"`     |
+| `disable-autoplay` | `"true"` or `"false"`                               | `"false"`     |
 | `custom-styles  `| String representing custom CSS styles               | -             |
 | `date-format`    | JSON String with type, locale & options (see [Issue#35](https://github.com/Vincenius/bsky-embed/issues/35))  | `'{"type":"relative"}'` |
 

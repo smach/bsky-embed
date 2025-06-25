@@ -1,12 +1,12 @@
 import { RichText } from '@atproto/api';
 import Hls from 'hls.js';
 
-export interface Text{
+export interface Text {
   val: string;
   setInnerHtml: boolean;
 }
 
-interface Reason{
+interface Reason {
   $type: string;
   by: {
     displayName: string;
@@ -101,7 +101,7 @@ const formatPost: ({ post, reason, isRoot }: { post: any; reason: Reason; isRoot
     ],
     video: post.embed?.$type === 'app.bsky.embed.video#view' && post.embed,
     card: post.embed?.$type === 'app.bsky.embed.external#view' && post.embed?.external,
-    replyPost: isRoot && formattedReply && formatPost({ post: formattedReply, reason: {$type: '', by: {displayName: ''}}, isRoot: false }),
+    replyPost: isRoot && formattedReply && formatPost({ post: formattedReply, reason: { $type: '', by: { displayName: '' } }, isRoot: false }),
     isRepost: reason?.$type === 'app.bsky.feed.defs#reasonRepost',
     repostBy: reason?.by?.displayName
   }
@@ -112,13 +112,13 @@ export const formatData = (data: any) =>
 
 
 export const getContentAfterLastSlash = (str: string): string => {
-    const lastIndex: number = str.lastIndexOf("/");
+  const lastIndex: number = str.lastIndexOf("/");
 
-    if (lastIndex !== -1) {
-        return str.substring(lastIndex + 1);
-    } else {
-        return str;
-    }
+  if (lastIndex !== -1) {
+    return str.substring(lastIndex + 1);
+  } else {
+    return str;
+  }
 }
 
 export const timeDifference = (previous: Date): string => {
@@ -133,31 +133,31 @@ export const timeDifference = (previous: Date): string => {
   const elapsed: number = current.getTime() - previous.getTime();
 
   if (elapsed < msPerMinute) {
-       return Math.floor(elapsed/1000) + 's';
+    return Math.floor(elapsed / 1000) + 's';
   }
 
   else if (elapsed < msPerHour) {
-       return Math.floor(elapsed/msPerMinute) + 'm';
+    return Math.floor(elapsed / msPerMinute) + 'm';
   }
 
-  else if (elapsed < msPerDay ) {
-       return Math.floor(elapsed/msPerHour ) + 'h';
+  else if (elapsed < msPerDay) {
+    return Math.floor(elapsed / msPerHour) + 'h';
   }
 
   else if (elapsed < msPerMonth) {
-      return Math.floor(elapsed/msPerDay) + 'd';
+    return Math.floor(elapsed / msPerDay) + 'd';
   }
 
   else if (elapsed < msPerYear) {
-      return Math.floor(elapsed/msPerMonth) + ' mo';
+    return Math.floor(elapsed / msPerMonth) + ' mo';
   }
 
   else {
-      return Math.floor(elapsed/msPerYear ) + ' yr';
+    return Math.floor(elapsed / msPerYear) + ' yr';
   }
 }
 
-export const fetchVideo = async (video: any, videoRef: any) => {
+export const fetchVideo = async (video: any, videoRef: any, disableAutoplay: boolean = false) => {
   if (!('IntersectionObserver' in window)) {
     console.error('IntersectionObserver not supported');
     return;
@@ -182,13 +182,18 @@ export const fetchVideo = async (video: any, videoRef: any) => {
           hls.loadSource(video.playlist); // Load the HLS manifest
           hls.attachMedia(videoRef); // Attach to video element
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            videoRef.play();
+            console.log({ disableAutoplay })
+            if (!disableAutoplay) {
+              videoRef.play();
+            }
           });
         } else if (videoRef.canPlayType('application/vnd.apple.mpegurl')) {
           // Fallback for native HLS support in Safari
           videoRef.src = video.playlist;
           videoRef.addEventListener('loadedmetadata', () => {
-            videoRef.play();
+            if (!disableAutoplay) {
+              videoRef.play();
+            }
           });
         }
 

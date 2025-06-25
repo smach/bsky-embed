@@ -17,6 +17,9 @@ interface Props {
   disableStyles?: boolean;
   customStyles?: string;
   loadMore?: boolean;
+  disableImages?: boolean;
+  disableVideos?: boolean;
+  disableAutoplay?: boolean;
   dateFormat?: DateFormat;
 }
 
@@ -32,6 +35,9 @@ const BskyEmbed: Component<Props> = ({
   search,
   loadMore = false,
   dateFormat,
+  disableImages = false,
+  disableVideos = false,
+  disableAutoplay = false,
 }: Props) => {
   let modalRef: HTMLDialogElement | null = null;
   let modalImageRef: HTMLImageElement | null = null;
@@ -133,6 +139,9 @@ const BskyEmbed: Component<Props> = ({
                   handleModalContent={handleModalContent}
                   linkTarget={linkTarget}
                   dateFormat={dateFormat}
+                  disableImages={disableImages}
+                  disableVideos={disableVideos}
+                  disableAutoplay={disableAutoplay}
                 />
               </div>
           )}

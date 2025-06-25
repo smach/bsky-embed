@@ -12,5 +12,8 @@ customElement('bsky-embed', {
   disableStyles: false,
   search: '',
   loadMore: false,
+  disableAutoplay: false,
+  disableImages: false,
+  disableVideos: false,
   dateFormat: {},
 }, BskyEmbed);
