@@ -40,8 +40,8 @@ const BskyPost: Component<Props> = ({
     </p> }
     <div class="flex gap-2">
       { !isCard && <img src={post.avatar} alt="profile picture" class="w-14 h-14 rounded-full" /> }
-      <div class="w-full">
-        <div class="flex max-w-[calc(100vw-96px)] items-center">
+      <div class="w-full max-w-[calc(100%-70px)]">
+        <div class="flex items-center">
           { isCard && <img src={post.avatar} alt="profile picture" class="w-4 h-4 mr-1 rounded-full" /> }
           <a href={`https://bsky.app/profile/${post.handle}`} class="text-ellipsis overflow-hidden whitespace-nowrap hover:underline dark:text-white" target={linkTarget} rel={linkTarget === '_blank' ? 'noopeener' : ''}>
             <span class="font-bold dark:text-white">{post.username}</span>

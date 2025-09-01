@@ -11,7 +11,7 @@ const App: Component = () => {
     linkTarget: '_self' | '_blank' | '_parent' | '_top',
     loadMore: boolean,
   } = {
-    username: "vincentwill.com",
+    username: "gynuity.bsky.social",
     feed: "at://did:plc:jcoy7v3a2t4rcfdh6i4kza25/app.bsky.feed.generator/astro",
     search: "#buildinpublic",
     mode: "",
