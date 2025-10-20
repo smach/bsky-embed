@@ -16,6 +16,7 @@ interface Props {
   linkImage?: boolean;
   disableStyles?: boolean;
   customStyles?: string;
+  customStylesFile?: string;
   loadMore?: boolean;
   disableImages?: boolean;
   disableVideos?: boolean;
@@ -31,6 +32,7 @@ const BskyEmbed: Component<Props> = ({
   linkTarget = '_self',
   linkImage = false,
   customStyles = '',
+  customStylesFile,
   disableStyles = false,
   search,
   loadMore = false,
@@ -131,6 +133,7 @@ const BskyEmbed: Component<Props> = ({
         {customStyles && <style>
           {customStyles}
         </style>}
+        {customStylesFile && <link rel="stylesheet" href={customStylesFile} />}
         <section class={`${mode} max-w-screen-sm mx-auto flex flex-col items-center`}>
           {(feedData().length > 0) && feedData().map((post, lastIndex) =>
               <div id={`post-${lastIndex}`} class="w-full">

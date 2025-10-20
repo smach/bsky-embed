@@ -94,8 +94,9 @@ All options:
 | `disable-styles` | `"true"` or `"false"`                               | `"false"`     |
 | `disable-images` | `"true"` or `"false"`                               | `"false"`     |
 | `disable-videos` | `"true"` or `"false"`                               | `"false"`     |
-| `disable-autoplay` | `"true"` or `"false"`                               | `"false"`     |
-| `custom-styles  `| String representing custom CSS styles               | -             |
+| `disable-autoplay` | `"true"` or `"false"`                             | `"false"`     |
+| `custom-styles` | String representing custom CSS styles                | -             |
+| `custom-styles-file`| URL to the CSS file                              | -             |
 | `date-format`    | JSON String with type, locale & options (see [Issue#35](https://github.com/Vincenius/bsky-embed/issues/35))  | `'{"type":"relative"}'` |
 
 ## Run Locally

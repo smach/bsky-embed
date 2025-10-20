@@ -182,7 +182,6 @@ export const fetchVideo = async (video: any, videoRef: any, disableAutoplay: boo
           hls.loadSource(video.playlist); // Load the HLS manifest
           hls.attachMedia(videoRef); // Attach to video element
           hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            console.log({ disableAutoplay })
             if (!disableAutoplay) {
               videoRef.play();
             }

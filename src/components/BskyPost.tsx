@@ -26,8 +26,6 @@ const BskyPost: Component<Props> = ({
 }: Props) => {
   let videoRef: HTMLVideoElement | undefined;
 
-  console.log(disableAutoplay)
-
   onMount(() => {
     if (!disableVideos && post.video && post.video.cid) {
       fetchVideo(post.video, videoRef, disableAutoplay);

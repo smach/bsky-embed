@@ -9,6 +9,7 @@ customElement('bsky-embed', {
   linkTarget: '_self',
   linkImage: false,
   customStyles: '',
+  customStylesFile: '',
   disableStyles: false,
   search: '',
   loadMore: false,
