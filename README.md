@@ -36,6 +36,16 @@ Import in any framework using:
   import "bsky-embed/dist/bsky-embed.es.js"
 ```
 
+### Option 3. Quarto Extension
+
+Install the extension in your Quarto project directory:
+
+```bash
+quarto add smach/bsky-embed
+```
+
+This will install the extension under the `_extensions` subdirectory. If you're using version control, you will want to check in this directory.
+
 ## Usage
 
 Minimal:
@@ -98,6 +108,32 @@ All options:
 | `custom-styles` | String representing custom CSS styles                | -             |
 | `custom-styles-file`| URL to the CSS file                              | -             |
 | `date-format`    | JSON String with type, locale & options (see [Issue#35](https://github.com/Vincenius/bsky-embed/issues/35))  | `'{"type":"relative"}'` |
+
+### Quarto Usage
+
+After installing the extension, use the shortcode in your `.qmd` files:
+
+Minimal example:
+````markdown
+{{< bsky-embed username="vincentwill.com" >}}
+````
+
+With options:
+````markdown
+{{< bsky-embed username="vincentwill.com" mode="dark" limit="5" >}}
+````
+
+Search for posts:
+````markdown
+{{< bsky-embed search="#BuildInPublic" limit="5" >}}
+````
+
+Custom feed:
+````markdown
+{{< bsky-embed feed="at://did:plc:jcoy7v3a2t4rcfdh6i4kza25/app.bsky.feed.generator/astro" limit="5" >}}
+````
+
+All the same options available in the HTML usage are supported in the shortcode format. See the `example.qmd` file for more examples.
 
 ## Run Locally
 
