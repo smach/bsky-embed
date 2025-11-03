@@ -1,2 +1,7 @@
 node_modules
 .DS_Store
+example.html
+example_files/
+*.html
+!index.html
+!test.html

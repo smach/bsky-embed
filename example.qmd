@@ -1,0 +1,52 @@
+---
+title: "Bluesky Embed Example"
+format: html
+---
+
+## Bluesky Embed Extension
+
+This example demonstrates how to use the bsky-embed Quarto extension.
+
+### Basic Usage
+
+Embed a user's feed:
+
+{{< bsky-embed username="vincentwill.com" >}}
+
+### With Options
+
+Embed with dark mode and custom limit:
+
+{{< bsky-embed username="vincentwill.com" mode="dark" limit="5" >}}
+
+### Search Posts
+
+Search for posts with a hashtag:
+
+{{< bsky-embed search="#BuildInPublic" limit="5" >}}
+
+### Custom Feed
+
+Embed a custom feed by ID:
+
+{{< bsky-embed feed="at://did:plc:jcoy7v3a2t4rcfdh6i4kza25/app.bsky.feed.generator/astro" limit="5" >}}
+
+### All Available Options
+
+The shortcode supports all the same options as the web component:
+
+- `username`: User handle
+- `feed`: Feed ID
+- `search`: Search term (e.g., hashtags)
+- `limit`: Number of posts to display (default: 10)
+- `mode`: Set to "dark" for dark mode
+- `link-target`: Link target (_self, _blank, _parent, _top)
+- `link-image`: Set to "true" to make images links
+- `load-more`: Set to "true" to enable load more button
+- `disable-styles`: Set to "true" to disable default styles
+- `disable-images`: Set to "true" to disable images
+- `disable-videos`: Set to "true" to disable videos
+- `disable-autoplay`: Set to "true" to disable video autoplay
+- `custom-styles`: Custom CSS styles
+- `custom-styles-file`: URL to custom CSS file
+- `date-format`: JSON string for date formatting
