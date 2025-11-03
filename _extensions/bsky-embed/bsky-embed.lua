@@ -1,6 +1,22 @@
 -- bsky-embed.lua
 -- Quarto shortcode for embedding Bluesky feeds
 
+-- Default values
+local DEFAULT_LIMIT = "10"
+local DEFAULT_LINK_TARGET = "_self"
+local DEFAULT_BOOLEAN = "false"
+
+-- HTML escape function to prevent XSS
+local function escapeHtml(str)
+  if not str then return "" end
+  str = str:gsub("&", "&amp;")
+  str = str:gsub("<", "&lt;")
+  str = str:gsub(">", "&gt;")
+  str = str:gsub('"', "&quot;")
+  str = str:gsub("'", "&#39;")
+  return str
+end
+
 local function ensureHtmlDeps()
   quarto.doc.add_html_dependency({
     name = 'bsky-embed',
@@ -28,84 +44,80 @@ return {
     local username = pandoc.utils.stringify(kwargs["username"] or "")
     local feed = pandoc.utils.stringify(kwargs["feed"] or "")
     local search = pandoc.utils.stringify(kwargs["search"] or "")
-    local limit = pandoc.utils.stringify(kwargs["limit"] or "10")
+    local limit = pandoc.utils.stringify(kwargs["limit"] or DEFAULT_LIMIT)
     local mode = pandoc.utils.stringify(kwargs["mode"] or "")
-    local linkTarget = pandoc.utils.stringify(kwargs["link-target"] or "_self")
-    local linkImage = pandoc.utils.stringify(kwargs["link-image"] or "false")
-    local loadMore = pandoc.utils.stringify(kwargs["load-more"] or "false")
-    local disableStyles = pandoc.utils.stringify(kwargs["disable-styles"] or "false")
+    local linkTarget = pandoc.utils.stringify(kwargs["link-target"] or DEFAULT_LINK_TARGET)
+    local linkImage = pandoc.utils.stringify(kwargs["link-image"] or DEFAULT_BOOLEAN)
+    local loadMore = pandoc.utils.stringify(kwargs["load-more"] or DEFAULT_BOOLEAN)
+    local disableStyles = pandoc.utils.stringify(kwargs["disable-styles"] or DEFAULT_BOOLEAN)
     local customStyles = pandoc.utils.stringify(kwargs["custom-styles"] or "")
     local customStylesFile = pandoc.utils.stringify(kwargs["custom-styles-file"] or "")
     local dateFormat = pandoc.utils.stringify(kwargs["date-format"] or "")
-    local disableImages = pandoc.utils.stringify(kwargs["disable-images"] or "false")
-    local disableVideos = pandoc.utils.stringify(kwargs["disable-videos"] or "false")
-    local disableAutoplay = pandoc.utils.stringify(kwargs["disable-autoplay"] or "false")
+    local disableImages = pandoc.utils.stringify(kwargs["disable-images"] or DEFAULT_BOOLEAN)
+    local disableVideos = pandoc.utils.stringify(kwargs["disable-videos"] or DEFAULT_BOOLEAN)
+    local disableAutoplay = pandoc.utils.stringify(kwargs["disable-autoplay"] or DEFAULT_BOOLEAN)
     
     -- Build the HTML attributes
     local attrs = {}
     
     if username ~= "" then
-      table.insert(attrs, string.format('username="%s"', username))
+      table.insert(attrs, string.format('username="%s"', escapeHtml(username)))
     end
     
     if feed ~= "" then
-      table.insert(attrs, string.format('feed="%s"', feed))
+      table.insert(attrs, string.format('feed="%s"', escapeHtml(feed)))
     end
     
     if search ~= "" then
-      table.insert(attrs, string.format('search="%s"', search))
+      table.insert(attrs, string.format('search="%s"', escapeHtml(search)))
     end
     
-    if limit ~= "" and limit ~= "10" then
-      table.insert(attrs, string.format('limit="%s"', limit))
+    if limit ~= "" and limit ~= DEFAULT_LIMIT then
+      table.insert(attrs, string.format('limit="%s"', escapeHtml(limit)))
     end
     
     if mode ~= "" then
-      table.insert(attrs, string.format('mode="%s"', mode))
+      table.insert(attrs, string.format('mode="%s"', escapeHtml(mode)))
     end
     
-    if linkTarget ~= "" and linkTarget ~= "_self" then
-      table.insert(attrs, string.format('link-target="%s"', linkTarget))
+    if linkTarget ~= "" and linkTarget ~= DEFAULT_LINK_TARGET then
+      table.insert(attrs, string.format('link-target="%s"', escapeHtml(linkTarget)))
     end
     
-    if linkImage ~= "" and linkImage ~= "false" then
-      table.insert(attrs, string.format('link-image="%s"', linkImage))
+    if linkImage ~= "" and linkImage ~= DEFAULT_BOOLEAN then
+      table.insert(attrs, string.format('link-image="%s"', escapeHtml(linkImage)))
     end
     
-    if loadMore ~= "" and loadMore ~= "false" then
-      table.insert(attrs, string.format('load-more="%s"', loadMore))
+    if loadMore ~= "" and loadMore ~= DEFAULT_BOOLEAN then
+      table.insert(attrs, string.format('load-more="%s"', escapeHtml(loadMore)))
     end
     
-    if disableStyles ~= "" and disableStyles ~= "false" then
-      table.insert(attrs, string.format('disable-styles="%s"', disableStyles))
+    if disableStyles ~= "" and disableStyles ~= DEFAULT_BOOLEAN then
+      table.insert(attrs, string.format('disable-styles="%s"', escapeHtml(disableStyles)))
     end
     
     if customStyles ~= "" then
-      -- Escape quotes in custom styles
-      local escapedStyles = customStyles:gsub('"', '&quot;')
-      table.insert(attrs, string.format('custom-styles="%s"', escapedStyles))
+      table.insert(attrs, string.format('custom-styles="%s"', escapeHtml(customStyles)))
     end
     
     if customStylesFile ~= "" then
-      table.insert(attrs, string.format('custom-styles-file="%s"', customStylesFile))
+      table.insert(attrs, string.format('custom-styles-file="%s"', escapeHtml(customStylesFile)))
     end
     
     if dateFormat ~= "" then
-      -- Escape quotes in date format JSON
-      local escapedDateFormat = dateFormat:gsub('"', '&quot;')
-      table.insert(attrs, string.format('date-format="%s"', escapedDateFormat))
+      table.insert(attrs, string.format('date-format="%s"', escapeHtml(dateFormat)))
     end
     
-    if disableImages ~= "" and disableImages ~= "false" then
-      table.insert(attrs, string.format('disable-images="%s"', disableImages))
+    if disableImages ~= "" and disableImages ~= DEFAULT_BOOLEAN then
+      table.insert(attrs, string.format('disable-images="%s"', escapeHtml(disableImages)))
     end
     
-    if disableVideos ~= "" and disableVideos ~= "false" then
-      table.insert(attrs, string.format('disable-videos="%s"', disableVideos))
+    if disableVideos ~= "" and disableVideos ~= DEFAULT_BOOLEAN then
+      table.insert(attrs, string.format('disable-videos="%s"', escapeHtml(disableVideos)))
     end
     
-    if disableAutoplay ~= "" and disableAutoplay ~= "false" then
-      table.insert(attrs, string.format('disable-autoplay="%s"', disableAutoplay))
+    if disableAutoplay ~= "" and disableAutoplay ~= DEFAULT_BOOLEAN then
+      table.insert(attrs, string.format('disable-autoplay="%s"', escapeHtml(disableAutoplay)))
     end
     
     -- Create the HTML element
