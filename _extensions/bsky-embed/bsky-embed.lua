@@ -17,6 +17,13 @@ local function escapeHtml(str)
   return str
 end
 
+-- Helper function to add attribute only if value is not default
+local function addAttributeIfNotDefault(attrs, name, value, default)
+  if value ~= "" and value ~= default then
+    table.insert(attrs, string.format('%s="%s"', name, escapeHtml(value)))
+  end
+end
+
 local function ensureHtmlDeps()
   quarto.doc.add_html_dependency({
     name = 'bsky-embed',
@@ -60,68 +67,33 @@ return {
     -- Build the HTML attributes
     local attrs = {}
     
-    if username ~= "" then
-      table.insert(attrs, string.format('username="%s"', escapeHtml(username)))
-    end
+    -- Required attributes (at least one must be present)
+    addAttributeIfNotDefault(attrs, "username", username, nil)
+    addAttributeIfNotDefault(attrs, "feed", feed, nil)
+    addAttributeIfNotDefault(attrs, "search", search, nil)
     
-    if feed ~= "" then
-      table.insert(attrs, string.format('feed="%s"', escapeHtml(feed)))
-    end
-    
-    if search ~= "" then
-      table.insert(attrs, string.format('search="%s"', escapeHtml(search)))
-    end
-    
-    if limit ~= "" and limit ~= DEFAULT_LIMIT then
-      table.insert(attrs, string.format('limit="%s"', escapeHtml(limit)))
-    end
-    
-    if mode ~= "" then
-      table.insert(attrs, string.format('mode="%s"', escapeHtml(mode)))
-    end
-    
-    if linkTarget ~= "" and linkTarget ~= DEFAULT_LINK_TARGET then
-      table.insert(attrs, string.format('link-target="%s"', escapeHtml(linkTarget)))
-    end
-    
-    if linkImage ~= "" and linkImage ~= DEFAULT_BOOLEAN then
-      table.insert(attrs, string.format('link-image="%s"', escapeHtml(linkImage)))
-    end
-    
-    if loadMore ~= "" and loadMore ~= DEFAULT_BOOLEAN then
-      table.insert(attrs, string.format('load-more="%s"', escapeHtml(loadMore)))
-    end
-    
-    if disableStyles ~= "" and disableStyles ~= DEFAULT_BOOLEAN then
-      table.insert(attrs, string.format('disable-styles="%s"', escapeHtml(disableStyles)))
-    end
-    
-    if customStyles ~= "" then
-      table.insert(attrs, string.format('custom-styles="%s"', escapeHtml(customStyles)))
-    end
-    
-    if customStylesFile ~= "" then
-      table.insert(attrs, string.format('custom-styles-file="%s"', escapeHtml(customStylesFile)))
-    end
-    
-    if dateFormat ~= "" then
-      table.insert(attrs, string.format('date-format="%s"', escapeHtml(dateFormat)))
-    end
-    
-    if disableImages ~= "" and disableImages ~= DEFAULT_BOOLEAN then
-      table.insert(attrs, string.format('disable-images="%s"', escapeHtml(disableImages)))
-    end
-    
-    if disableVideos ~= "" and disableVideos ~= DEFAULT_BOOLEAN then
-      table.insert(attrs, string.format('disable-videos="%s"', escapeHtml(disableVideos)))
-    end
-    
-    if disableAutoplay ~= "" and disableAutoplay ~= DEFAULT_BOOLEAN then
-      table.insert(attrs, string.format('disable-autoplay="%s"', escapeHtml(disableAutoplay)))
-    end
+    -- Optional attributes with defaults
+    addAttributeIfNotDefault(attrs, "limit", limit, DEFAULT_LIMIT)
+    addAttributeIfNotDefault(attrs, "mode", mode, nil)
+    addAttributeIfNotDefault(attrs, "link-target", linkTarget, DEFAULT_LINK_TARGET)
+    addAttributeIfNotDefault(attrs, "link-image", linkImage, DEFAULT_BOOLEAN)
+    addAttributeIfNotDefault(attrs, "load-more", loadMore, DEFAULT_BOOLEAN)
+    addAttributeIfNotDefault(attrs, "disable-styles", disableStyles, DEFAULT_BOOLEAN)
+    addAttributeIfNotDefault(attrs, "custom-styles", customStyles, nil)
+    addAttributeIfNotDefault(attrs, "custom-styles-file", customStylesFile, nil)
+    addAttributeIfNotDefault(attrs, "date-format", dateFormat, nil)
+    addAttributeIfNotDefault(attrs, "disable-images", disableImages, DEFAULT_BOOLEAN)
+    addAttributeIfNotDefault(attrs, "disable-videos", disableVideos, DEFAULT_BOOLEAN)
+    addAttributeIfNotDefault(attrs, "disable-autoplay", disableAutoplay, DEFAULT_BOOLEAN)
     
     -- Create the HTML element
-    local html = string.format('<bsky-embed %s></bsky-embed>', table.concat(attrs, ' '))
+    local attrsStr = table.concat(attrs, ' ')
+    local html
+    if attrsStr ~= "" then
+      html = string.format('<bsky-embed %s></bsky-embed>', attrsStr)
+    else
+      html = '<bsky-embed></bsky-embed>'
+    end
     
     -- Return as raw HTML
     return pandoc.RawBlock('html', html)
